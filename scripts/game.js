@@ -13,8 +13,8 @@ export function gameLoop() {
         obj.draw();
 
         // Calcs distance from player to object center
-        const xDistance = player.x - (obj.x + obj.width / 2);
-        const yDistance = player.y - (obj.y + obj.height / 2);
+        const xDistance = player.x - (obj.x + obj.width / 2); // X Distance to the object
+        const yDistance = player.y - (obj.y + obj.height / 2); // Y Distance to the object
         const distance = Math.sqrt(xDistance * xDistance + yDistance * yDistance);
 
         // Approximate object radius as half the largest dimension
@@ -28,6 +28,16 @@ export function gameLoop() {
         if (distance < swallowDistance && player.targetRadius >= obj.requiredRadius) {
             obj.isVisible = false;
             player.targetRadius += obj.points; 
+        }
+        else if (distance < swallowDistance && player.targetRadius < obj.requiredRadius) { // Collide with larger object, but can't swallow it
+            // Current player movement vector
+            const dotProduct = xDistance * player.xSpeed + yDistance * player.ySpeed;
+
+            // If the dot product is negative, the player is approaching the object
+            if (dotProduct < 0) {
+                player.x -= player.xSpeed;
+                player.y -= player.ySpeed;
+            }
         }
     });
 

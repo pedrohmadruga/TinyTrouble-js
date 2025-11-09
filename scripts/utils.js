@@ -1,7 +1,7 @@
 import { player } from "./state.js";
 
 export function handlePlayerMovement() {
-    const speed = 2.5;
+    const speed = 5;
     player.xSpeed = 0;
     player.ySpeed = 0;
 
