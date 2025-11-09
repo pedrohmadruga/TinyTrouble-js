@@ -24,9 +24,10 @@ export function gameLoop() {
 
         const swallowDistance = (player.radius + objectRadius) * overlapFactor;
 
-        if (distance < swallowDistance && player.radius >= obj.requiredRadius) {
+        // Check if player can swallow the object
+        if (distance < swallowDistance && player.targetRadius >= obj.requiredRadius) {
             obj.isVisible = false;
-            player.radius += obj.points; 
+            player.targetRadius += obj.points; 
         }
     });
 

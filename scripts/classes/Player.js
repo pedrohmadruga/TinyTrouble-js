@@ -4,6 +4,7 @@ export class Player {
     #xSpeed; #ySpeed;
     #xPosition; #yPosition;
     #radius;
+    #targetRadius;
     #keyPressed = {
         up: false,
         down: false,
@@ -15,6 +16,7 @@ export class Player {
         this.#xPosition = xPosition;
         this.#yPosition = yPosition;
         this.#radius = radius;
+        this.#targetRadius = radius;
         this.#xSpeed = 0;
         this.#ySpeed = 0;
 
@@ -27,6 +29,7 @@ export class Player {
     get xSpeed() { return this.#xSpeed }
     get ySpeed() { return this.#ySpeed }
     get radius() { return this.#radius; }
+    get targetRadius() { return this.#targetRadius; }
     get keyPressed() { return this.#keyPressed; }
 
     set xSpeed(xSpe) { this.#xSpeed = xSpe };
@@ -35,6 +38,7 @@ export class Player {
     set y(y) { this.#yPosition = y};
     set keyPressed(newKeyPressed) { this.#keyPressed = newKeyPressed; }
     set radius(newRadius) { this.#radius = newRadius; }
+    set targetRadius(newTargetRadius) { this.#targetRadius = newTargetRadius; }
 
     draw() {
         if (this.sprite.complete) {
@@ -51,5 +55,8 @@ export class Player {
     update() {
         this.#xPosition += this.#xSpeed;
         this.#yPosition += this.#ySpeed;
+
+        const growthSpeed = 0.1;
+        this.#radius += (this.#targetRadius - this.#radius) * growthSpeed;
     }
 }
