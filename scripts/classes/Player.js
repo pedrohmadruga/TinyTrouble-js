@@ -34,10 +34,10 @@ export class Player {
     set x(x) { this.#xPosition = x};
     set y(y) { this.#yPosition = y};
     set keyPressed(newKeyPressed) { this.#keyPressed = newKeyPressed; }
+    set radius(newRadius) { this.#radius = newRadius; }
 
     draw() {
         if (this.sprite.complete) {
-            // Desenha a imagem centralizada na posição do player
             constants.ctx.drawImage(
                 this.sprite,
                 this.#xPosition - this.radius,
