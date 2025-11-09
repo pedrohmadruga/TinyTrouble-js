@@ -9,5 +9,8 @@ export function gameLoop() {
     player.draw();
     player.update();
 
+    // Next step: test swallowing objects smaller than the player, increasing player radius, and colliding with larger objects
+    // After that, make camera follow player if he distances too much from the center of the canvas
+
     state.gameLoopId = requestAnimationFrame(gameLoop);
 }

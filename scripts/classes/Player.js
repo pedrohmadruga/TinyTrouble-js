@@ -17,6 +17,9 @@ export class Player {
         this.#radius = radius;
         this.#xSpeed = 0;
         this.#ySpeed = 0;
+
+        this.sprite = new Image();
+        this.sprite.src = "./images/Player_sprite.png";
     }
 
     get x() { return this.#xPosition; }
@@ -33,14 +36,19 @@ export class Player {
     set keyPressed(newKeyPressed) { this.#keyPressed = newKeyPressed; }
 
     draw() {
-        constants.ctx.beginPath();
-        constants.ctx.arc(this.#xPosition, this.#yPosition, this.#radius, 0, Math.PI * 2);
-        constants.ctx.fillStyle = "red";
-        constants.ctx.fill();
-        constants.ctx.closePath();
+        if (this.sprite.complete) {
+            // Desenha a imagem centralizada na posição do player
+            constants.ctx.drawImage(
+                this.sprite,
+                this.#xPosition - this.radius,
+                this.#yPosition - this.radius,
+                this.radius * 2,
+                this.radius * 2
+            );
+        } 
     }
 
-    update()  {
+    update() {
         this.#xPosition += this.#xSpeed;
         this.#yPosition += this.#ySpeed;
     }
