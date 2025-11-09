@@ -70,4 +70,9 @@ export class GameObject {
             );
         }
     }
+
+    update(xPos, yPos) {
+        this.#xPosition += xPos;
+        this.#yPosition += yPos;
+    }
 }
