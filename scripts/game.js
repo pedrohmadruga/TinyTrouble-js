@@ -1,29 +1,15 @@
 import * as constants from "./constants.js";
 import { player, state, gameObjects } from "./state.js";
-import { handlePlayerMovement, cameraFollow } from "./utils.js";
+import { handlePlayerMovement, cameraFollow, handleZoom } from "./utils.js";
 
 export function gameLoop() {
     constants.ctx.clearRect(0, 0, constants.canvas.width, constants.canvas.height);
 
     handlePlayerMovement();
+    handleZoom();
+    
     const { worldOffsetX, worldOffsetY } = cameraFollow();
-
-    // Smooth zooming based on player size
-    let targetZoom = 1;
-
-    if (player.targetRadius > 130) {
-        targetZoom = 130 / player.targetRadius;
-    }
-
-    const zoomLerpSpeed = 0.05; // LERP: Linear Interpolation
-    state.currentZoom += (targetZoom - state.currentZoom) * zoomLerpSpeed;
-
-    // Apply camera transformations
-    constants.ctx.save();
-    constants.ctx.translate(constants.canvasCenterX, constants.canvasCenterY);
-    constants.ctx.scale(state.currentZoom, state.currentZoom);
-    constants.ctx.translate(-constants.canvasCenterX, -constants.canvasCenterY);
-
+    
     gameObjects.forEach((obj) => {
         if (!obj.isVisible) return; // Skip invisible objects
 

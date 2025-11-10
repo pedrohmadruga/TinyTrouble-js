@@ -1,4 +1,4 @@
-import { player } from "./state.js";
+import { player, state } from "./state.js";
 import * as constants from "./constants.js";
 
 export function handlePlayerMovement() {
@@ -40,4 +40,22 @@ export function cameraFollow() {
     }
 
     return { worldOffsetX, worldOffsetY };
+}
+
+export function handleZoom() {
+    // Smooth zooming based on player size
+    let targetZoom = 1;
+
+    if (player.targetRadius > 130) {
+        targetZoom = 130 / player.targetRadius;
+    }
+
+    const zoomLerpSpeed = 0.05; // LERP: Linear Interpolation
+    state.currentZoom += (targetZoom - state.currentZoom) * zoomLerpSpeed;
+
+    // Apply camera transformations
+    constants.ctx.save();
+    constants.ctx.translate(constants.canvasCenterX, constants.canvasCenterY);
+    constants.ctx.scale(state.currentZoom, state.currentZoom);
+    constants.ctx.translate(-constants.canvasCenterX, -constants.canvasCenterY);
 }
