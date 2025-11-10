@@ -12,4 +12,5 @@ export const gameObjects = [
 
 export const state = {
     gameLoopId: null,
+    currentZoom: 1,
 };

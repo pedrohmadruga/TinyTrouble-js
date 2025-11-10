@@ -8,6 +8,22 @@ export function gameLoop() {
     handlePlayerMovement();
     const { worldOffsetX, worldOffsetY } = cameraFollow();
 
+    // Smooth zooming based on player size
+    let targetZoom = 1;
+
+    if (player.targetRadius > 130) {
+        targetZoom = 130 / player.targetRadius;
+    }
+
+    const zoomLerpSpeed = 0.05; // LERP: Linear Interpolation
+    state.currentZoom += (targetZoom - state.currentZoom) * zoomLerpSpeed;
+
+    // Apply camera transformations
+    constants.ctx.save();
+    constants.ctx.translate(constants.canvasCenterX, constants.canvasCenterY);
+    constants.ctx.scale(state.currentZoom, state.currentZoom);
+    constants.ctx.translate(-constants.canvasCenterX, -constants.canvasCenterY);
+
     gameObjects.forEach((obj) => {
         if (!obj.isVisible) return; // Skip invisible objects
 
@@ -43,15 +59,13 @@ export function gameLoop() {
         }
     });
 
+    // TODO: When the player reaches a certain size (130px), scale down all game objects instead of growing the player further.
+    // TODO: Small explosion animation when all objects are swallowed.
+
     player.draw();
     player.update();
 
-    // After that, make camera follow player if he distances too much from the center of the canvas
-    /*
-    1. Calcular a distância do jogador ao centro do canvas no arquivo
-    2. Se a distância for maior que um certo limite (ex: 100 pixels), mover o canvas na direção oposta ao movimento do jogador no arquivo
-    3. Ajustar a posição de todos os objetos do jogo de acordo com o movimento do canvas
-    */ 
+    constants.ctx.restore();
 
     state.gameLoopId = requestAnimationFrame(gameLoop);
 }
