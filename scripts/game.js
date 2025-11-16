@@ -34,7 +34,8 @@ export function gameLoop() {
         // Check if player can swallow the object
         if (distance < swallowDistance && player.targetRadius >= obj.requiredRadius) { // Can swallow
             obj.isVisible = false;
-            player.targetRadius += obj.points; 
+            player.targetRadius += obj.points;
+            console.log(player.targetRadius);
         }
         else if (distance < swallowDistance && player.targetRadius < obj.requiredRadius) { // Collide with larger object, but can't swallow it
             // Current player movement vector

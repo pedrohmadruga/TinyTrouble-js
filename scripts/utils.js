@@ -9,7 +9,7 @@ export function handlePlayerMovement() {
 
     // Do not let player move out of level bounds
     if (player.keyPressed.right && player.x + player.radius < constants.canvas.width)
-    player.xSpeed += speed;
+        player.xSpeed += speed;
 
     if (player.keyPressed.left && player.x - player.radius > 0)
         player.xSpeed -= speed;
