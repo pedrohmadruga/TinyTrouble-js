@@ -26,8 +26,6 @@ export const gameObjects = [
 export const state = {
     gameLoopId: null,
     currentZoom: 1,
-    cameraX: 0,
-    cameraY: 0,
     hasWon: false,
     hasPlayedWinAnimation: false,
 };

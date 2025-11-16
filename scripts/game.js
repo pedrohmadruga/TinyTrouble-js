@@ -47,8 +47,7 @@ export function gameLoop() {
             }
         }
     });
-
-    // TODO: Small explosion animation when target size is met
+    
     // TODO: Starting menu and options menu
     // TODO: Sound effects and background music
     // TODO: Different levels with increasing difficulty
