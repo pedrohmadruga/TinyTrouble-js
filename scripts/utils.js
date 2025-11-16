@@ -1,4 +1,4 @@
-import { player, state } from "./state.js";
+import { player, state, gameObjects } from "./state.js";
 import * as constants from "./constants.js";
 
 export function handlePlayerMovement() {
@@ -21,20 +21,27 @@ export function handlePlayerMovement() {
 export function cameraFollow() {
     let worldOffsetX = 0;
     let worldOffsetY = 0;
+    let leftBrackgroundOnOrigin = (gameObjects[0].x >= 0) ? true : false;
+    let rightBrackgroundOnOrigin = (gameObjects[0].x + gameObjects[0].width <= constants.canvas.width) ? true : false;
+    let topBrackgroundOnOrigin = (gameObjects[0].y >= 0) ? true : false;
+    let bottomBrackgroundOnOrigin = (gameObjects[0].y + gameObjects[0].height <= 1720) ? true : false;
+
+    console.log("bg left:", gameObjects[0].x);
+console.log("limit:", constants.canvas.height);
 
     // Move game objects in the opposite direction when player is too far from center
-    if (player.x > constants.canvasCenterX + 100 && player.xSpeed > 0) {
+    if (player.x > constants.canvasCenterX + 100 && player.xSpeed > 0 && !rightBrackgroundOnOrigin) { // Player moving right
         worldOffsetX = -player.xSpeed;
         player.x -= player.xSpeed; // Keeps player within bounds
-    } else if (player.x < constants.canvasCenterX - 100 && player.xSpeed < 0) {
+    } else if (player.x < constants.canvasCenterX - 100 && player.xSpeed < 0 && !leftBrackgroundOnOrigin) { // Player moving left
         worldOffsetX = -player.xSpeed;
         player.x -= player.xSpeed;
     }
 
-    if (player.y > constants.canvasCenterY + 100 && player.ySpeed > 0) {
+    if (player.y > constants.canvasCenterY + 100 && player.ySpeed > 0 && !bottomBrackgroundOnOrigin) { // Player moving down
         worldOffsetY = -player.ySpeed;
         player.y -= player.ySpeed;
-    } else if (player.y < constants.canvasCenterY - 100 && player.ySpeed < 0) {
+    } else if (player.y < constants.canvasCenterY - 100 && player.ySpeed < 0 && !topBrackgroundOnOrigin) { // Player moving up
         worldOffsetY = -player.ySpeed;
         player.y -= player.ySpeed;
     }

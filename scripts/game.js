@@ -48,8 +48,8 @@ export function gameLoop() {
         }
     });
 
-    // TODO: Prevent player from moving out of background bounds
     // TODO: Only move camera if the background is within bounds
+    // TODO: Prevent player from moving out of background bounds
     // TODO: Fix fake PNG transparency (black bg showing)
     // TODO: Small explosion animation when target size is met
     // TODO: Starting menu and options menu
