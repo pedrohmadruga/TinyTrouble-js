@@ -10,7 +10,8 @@ export class Player {
         down: false,
         left: false,
         right: false
-    }
+    };
+    #frozen = false;
 
     constructor(xPosition, yPosition, radius) {
         this.#xPosition = xPosition;
@@ -31,6 +32,7 @@ export class Player {
     get radius() { return this.#radius; }
     get targetRadius() { return this.#targetRadius; }
     get keyPressed() { return this.#keyPressed; }
+    get frozen() { return this.#frozen; }
 
     set xSpeed(xSpe) { this.#xSpeed = xSpe };
     set ySpeed(ySpe) { this.#ySpeed = ySpe };
@@ -39,6 +41,7 @@ export class Player {
     set keyPressed(newKeyPressed) { this.#keyPressed = newKeyPressed; }
     set radius(newRadius) { this.#radius = newRadius; }
     set targetRadius(newTargetRadius) { this.#targetRadius = newTargetRadius; }
+    set frozen(isFrozen) { this.#frozen = isFrozen; }
 
     draw() {
         if (this.sprite.complete) {

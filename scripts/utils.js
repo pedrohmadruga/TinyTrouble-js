@@ -2,6 +2,7 @@ import { player, state, gameObjects } from "./state.js";
 import * as constants from "./constants.js";
 
 export function handlePlayerMovement() {
+    if (player.frozen)  return;
     const speed = 5;
     player.xSpeed = 0;
     player.ySpeed = 0;
@@ -70,4 +71,58 @@ export function handleZoom() {
     constants.ctx.translate(constants.canvasCenterX, constants.canvasCenterY);
     constants.ctx.scale(state.currentZoom, state.currentZoom);
     constants.ctx.translate(-constants.canvasCenterX, -constants.canvasCenterY);
+}
+
+export function createWinExplosion(ctx) {
+
+    // If there is not yet a particle system, create one
+    if (!createWinExplosion.particles) {
+        createWinExplosion.particles = [];
+
+        const count = 80;
+        const speedMin = 2;
+        const speedMax = 6;
+        const lifeMin = 40;
+        const lifeMax = 80;
+
+        const cx = player.x;
+        const cy = player.y;
+
+        for (let i = 0; i < count; i++) {
+            const angle = Math.random() * Math.PI * 2;
+            const speed = speedMin + Math.random() * (speedMax - speedMin);
+
+            createWinExplosion.particles.push({
+                x: cx,
+                y: cy,
+                vx: Math.cos(angle) * speed,
+                vy: Math.sin(angle) * speed,
+                radius: 3 + Math.random() * 3,
+                life: lifeMin + Math.random() * (lifeMax - lifeMin),
+                color: `hsl(${Math.random() * 360}, 100%, 60%)`
+            });
+        }
+    }
+
+    const particles = createWinExplosion.particles;
+
+    // Update and draw particles
+    for (let p of particles) {
+        p.x += p.vx;
+        p.y += p.vy;
+        p.life--;
+
+        ctx.beginPath();
+        ctx.fillStyle = p.color;
+        ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+        ctx.fill();
+    }
+
+    // Removes dead particles
+    createWinExplosion.particles = particles.filter(p => p.life > 0);
+
+    // If all particles are dead, remove the particle system
+    if (createWinExplosion.particles.length === 0) {
+        createWinExplosion.particles = null;
+    }
 }

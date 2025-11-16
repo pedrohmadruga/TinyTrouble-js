@@ -1,6 +1,6 @@
 import * as constants from "./constants.js";
-import { player, state, gameObjects } from "./state.js";
-import { handlePlayerMovement, cameraFollow, handleZoom } from "./utils.js";
+import { player, state, gameObjects, level } from "./state.js";
+import { handlePlayerMovement, cameraFollow, handleZoom, createWinExplosion } from "./utils.js";
 
 export function gameLoop() {
     constants.ctx.clearRect(0, 0, constants.canvas.width, constants.canvas.height);
@@ -48,7 +48,6 @@ export function gameLoop() {
         }
     });
 
-    // TODO: Fix fake PNG transparency (black bg showing)
     // TODO: Small explosion animation when target size is met
     // TODO: Starting menu and options menu
     // TODO: Sound effects and background music
@@ -59,6 +58,24 @@ export function gameLoop() {
     player.update();
 
     constants.ctx.restore();
+
+    if (player.targetRadius >= level.requiredSizeToAdvance && !state.hasWon) {
+        state.hasWon = true;
+
+        // stops every movement
+        player.xSpeed = 0;
+        player.ySpeed = 0;
+        player.frozen = true;
+    }
+
+    // Win animation
+    if (state.hasWon && !state.hasPlayedWinAnimation) {
+        createWinExplosion(constants.ctx); 
+
+        if(createWinExplosion.particles === null) { // Animation finished
+            state.hasPlayedWinAnimation = true;
+        }
+    }
 
     state.gameLoopId = requestAnimationFrame(gameLoop);
 }

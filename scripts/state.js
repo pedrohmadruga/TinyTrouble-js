@@ -12,6 +12,7 @@ export const level = {
         height: 3000,
     },
     levelNumber: 1,
+    requiredSizeToAdvance: 75,
 }
 
 export const gameObjects = [
@@ -27,5 +28,7 @@ export const state = {
     currentZoom: 1,
     cameraX: 0,
     cameraY: 0,
+    hasWon: false,
+    hasPlayedWinAnimation: false,
 };
 
