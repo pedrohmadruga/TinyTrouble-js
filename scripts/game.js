@@ -7,7 +7,7 @@ export function gameLoop() {
 
     handlePlayerMovement();
     handleZoom();
-    
+
     const { worldOffsetX, worldOffsetY } = cameraFollow();
     
     gameObjects.forEach((obj) => {
@@ -15,6 +15,9 @@ export function gameLoop() {
 
         obj.update(worldOffsetX, worldOffsetY);
         obj.draw();
+
+        // If gameObject is background, skip collision detection
+        if (obj.imageSrc.includes("background_level")) return;
 
         // Calcs distance from player to object center
         const xDistance = player.x - (obj.x + obj.width / 2); // X Distance to the object
@@ -29,7 +32,7 @@ export function gameLoop() {
         const swallowDistance = (player.radius + objectRadius) * overlapFactor;
 
         // Check if player can swallow the object
-        if (distance < swallowDistance && player.targetRadius >= obj.requiredRadius) {
+        if (distance < swallowDistance && player.targetRadius >= obj.requiredRadius) { // Can swallow
             obj.isVisible = false;
             player.targetRadius += obj.points; 
         }
@@ -45,8 +48,14 @@ export function gameLoop() {
         }
     });
 
-    // TODO: When the player reaches a certain size (130px), scale down all game objects instead of growing the player further.
-    // TODO: Small explosion animation when all objects are swallowed.
+    // TODO: Prevent player from moving out of background bounds
+    // TODO: Only move camera if the background is within bounds
+    // TODO: Fix fake PNG transparency (black bg showing)
+    // TODO: Small explosion animation when target size is met
+    // TODO: Starting menu and options menu
+    // TODO: Sound effects and background music
+    // TODO: Different levels with increasing difficulty
+    // TODO: AI movement for dynamic objects (mice, birds, humans, etc.)
 
     player.draw();
     player.update();
