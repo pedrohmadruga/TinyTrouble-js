@@ -6,10 +6,18 @@ export function handlePlayerMovement() {
     player.xSpeed = 0;
     player.ySpeed = 0;
 
-    if (player.keyPressed.right) player.xSpeed += speed;
-    if (player.keyPressed.left)  player.xSpeed -= speed;
-    if (player.keyPressed.up)    player.ySpeed -= speed;
-    if (player.keyPressed.down)  player.ySpeed += speed;
+    // Do not let player move out of level bounds
+    if (player.keyPressed.right && player.x + player.radius < constants.canvas.width)
+    player.xSpeed += speed;
+
+    if (player.keyPressed.left && player.x - player.radius > 0)
+        player.xSpeed -= speed;
+
+    if (player.keyPressed.up && player.y - player.radius > 0)
+        player.ySpeed -= speed;
+
+    if (player.keyPressed.down && player.y + player.radius < constants.canvas.height)
+        player.ySpeed += speed;
 
     // Adjust player movement so that it does not move faster diagonally
     if (player.xSpeed !== 0 && player.ySpeed !== 0) {
@@ -25,9 +33,6 @@ export function cameraFollow() {
     let rightBrackgroundOnOrigin = (gameObjects[0].x + gameObjects[0].width <= constants.canvas.width) ? true : false;
     let topBrackgroundOnOrigin = (gameObjects[0].y >= 0) ? true : false;
     let bottomBrackgroundOnOrigin = (gameObjects[0].y + gameObjects[0].height <= 1720) ? true : false;
-
-    console.log("bg left:", gameObjects[0].x);
-console.log("limit:", constants.canvas.height);
 
     // Move game objects in the opposite direction when player is too far from center
     if (player.x > constants.canvasCenterX + 100 && player.xSpeed > 0 && !rightBrackgroundOnOrigin) { // Player moving right
